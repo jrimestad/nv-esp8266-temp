@@ -18,7 +18,7 @@ function getTemperature()
     end
 end
 
-function dweetSensors()
+function reportSensors()
 
     temp = getTemperature()
     if temp == nil then
@@ -29,12 +29,12 @@ function dweetSensors()
     gpio.write(led_blue, gpio.LOW)
 
     http.post(
-        "http://dweet.io/dweet/for/" .. node_id,
-        'Content-Type: application/json\r\n',
-        "{\"flashid\":" .. node.flashid() .. ", \"temp_f\":" .. temp .. "}",
+        "http://api.thingspeak.com/update.json",
+        "Content-Type: application/json\r\n",
+        "{\"api_key\":\"J2JMDOASRENKAN1Y\",\"" .. node_id .. "\":" .. temp .. "}",
         function(code, data)
             if (code >= 0) then
-                print("dweet return (" .. code .. "):\r\n" .. data)
+                print("ThingSpeak return: (" .. code .. "):\r\n" .. data)
                 gpio.write(led_blue, gpio.HIGH)
             end
         end)
@@ -44,10 +44,10 @@ end
 
 -- Enable manual reading using GPIO-7
 gpio.mode(7, gpio.INT)
-gpio.trig(7, "down", dweetSensors)
+gpio.trig(7, "down", reportSensors)
 
 -- Trigger automatic reading every 60 seconds
-tmr.alarm(0, 60*1000, tmr.ALARM_AUTO, dweetSensors)
+tmr.alarm(0, 60*1000, tmr.ALARM_AUTO, reportSensors)
 
 -- Reset this sensor node to default state using GPIO-8
 gpio.mode(8, gpio.INT)
@@ -57,5 +57,5 @@ gpio.trig(8, "down", function()
     node.restart()
 end)
 
-dweetSensors()
+reportSensors()
 
