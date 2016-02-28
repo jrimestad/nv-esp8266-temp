@@ -1,5 +1,4 @@
-# nv-esp8266-temp
-Small easy to configure temperature nodes using NodeMCU, DHT22, ThingSpeak, and HighCharts.
+## Small easy to configure temperature nodes using NodeMCU, DHT22, ThingSpeak, and HighCharts.
 
 Again, my new office is too hot or cold.
 
@@ -13,3 +12,6 @@ SW Features:
 - ThingSpeak
 - HighCharts
 - Easy node config and WiFi setup without coding
+
+(https://github.com/MFornander/nv-esp8266-temp)
+
